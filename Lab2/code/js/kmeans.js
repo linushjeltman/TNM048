@@ -38,9 +38,11 @@ function kmeans(data, k) {
         qualitycheck = qualityCheck(centroid,new_array,clusterIndexPerPoint);
 
         //End the loop if...
-
+        if(qualityCheck < 1000) break;
+        iterations++;
     }
-    while (converge == false)
+    //while (converge == false)
+    while(iterations < 1000)
     //Return results
     return {
         assignments: clusterIndexPerPoint
@@ -193,7 +195,7 @@ function computeClusterMeans(points, assignments, k){
         for(let i = 0; i < k; i++)
         {
             var temp = [];
-            console.log(i);
+            //console.log(i);
             for(let j = 0; j < assignments.length; j++){
                 if(assignments[j]==i)
                 {            
@@ -206,7 +208,7 @@ function computeClusterMeans(points, assignments, k){
             }
         }
     }
-    console.table(newMeans);
+    //console.table(newMeans);
     return newMeans;
 };
 
@@ -220,17 +222,19 @@ function computeClusterMeans(points, assignments, k){
  */
 function qualityCheck(centroid, new_array, clusterIndexPerPoint){
 
-    for(n in centroid)
-        {
-            for(let i = 0; i < new_array.length; i++)
-            {
-                if(clusterIndexPerPoint == n);
+    var qualitycheck;
+
+    for(n in centroid){
+        for(let i = 0; i < new_array.length; i++){
+            if(clusterIndexPerPoint[j] == n){
+                for(var j = 0; j < centroid[0].length; j++){
+                    qualitycheck += euclideanDistance(centroid[n], new_array[i])
+                }
             }
         }
-
+    }
     return qualitycheck;
 }
-
 /**
  * Calculate average of points
  * @param {*} points
