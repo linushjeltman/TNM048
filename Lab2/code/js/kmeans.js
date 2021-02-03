@@ -35,14 +35,16 @@ function kmeans(data, k) {
         var clusterIndexPerPoint = assignPointsToMeans(new_array, centroid);
 
         //Task 4.4 - Do a quality check for current result
+        oldqualitycheck = qualitycheck;
         qualitycheck = qualityCheck(centroid,new_array,clusterIndexPerPoint);
-
+        
         //End the loop if...
-        if(qualityCheck < 1000) break;
+        console.log("q: " + qualitycheck/oldqualitycheck )
+        if(qualitycheck/oldqualitycheck < 0.9) break;
         iterations++;
     }
     //while (converge == false)
-    while(iterations < 1000)
+    while(iterations < maxLoops)
     //Return results
     return {
         assignments: clusterIndexPerPoint
@@ -100,9 +102,10 @@ function initCentroids(data, k){
 * @return {Array}
 */
 function assignPointsToMeans(points, means){
+    
     var assignments = []; 
     for(let i = 0; i < points.length; i++){
-        assignments[i] = findClosestMeanIndex(points[i], means);
+        assignments.push(findClosestMeanIndex(points[i], means));
     }
 
     //console.table(assignments)
@@ -222,17 +225,18 @@ function computeClusterMeans(points, assignments, k){
  */
 function qualityCheck(centroid, new_array, clusterIndexPerPoint){
 
-    var qualitycheck;
-
+    var qualitycheck = 0;
+    
     for(n in centroid){
         for(let i = 0; i < new_array.length; i++){
-            if(clusterIndexPerPoint[j] == n){
+            if(clusterIndexPerPoint[i] == n){
                 for(var j = 0; j < centroid[0].length; j++){
-                    qualitycheck += euclideanDistance(centroid[n], new_array[i])
+                    qualitycheck += euclideanDistance(new_array[i], centroid[n]);
                 }
             }
         }
     }
+    console.log(qualitycheck);
     return qualitycheck;
 }
 /**
