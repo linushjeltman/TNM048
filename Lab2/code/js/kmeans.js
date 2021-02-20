@@ -72,7 +72,7 @@ function parseData(data){
         }
         array.push(temp);
     }    
-    //console.table(array);
+    console.table(array);
     return array;
 }
 
